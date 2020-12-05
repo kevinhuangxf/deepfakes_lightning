@@ -1,0 +1,5 @@
+absl-py
+tqdm
+torch
+torchvision
+pytorch-lightning==0.9.0
