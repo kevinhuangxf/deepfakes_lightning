@@ -42,7 +42,7 @@ class DeepFakesAutoEncoder(nn.Module):
         return out
 
 
-class Conv2D(nn.module):
+class Conv2D(nn.Module):
 
     def __init__(self, cin, cout, kernel_size, stride):
         super().__init__()
