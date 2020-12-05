@@ -56,7 +56,7 @@ class Conv2D(nn.Module):
         return self.conv_block(x)
 
 
-class Conv2D_Transpose:
+class Conv2D_Transpose(nn.Module):
 
     def __init__(self, cin, cout, kernel_size=5, stride=2):
         self.conv_block = nn.Sequential(
