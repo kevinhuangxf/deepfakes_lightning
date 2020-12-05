@@ -1,5 +1,4 @@
-import torch.utils.data
-from torch import nn, optim
+from torch import nn
 from .padding_same_conv import Conv2d
 
 ## deep fakes auto-encoder
