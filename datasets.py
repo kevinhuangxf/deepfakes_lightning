@@ -40,7 +40,7 @@ class ImagesDataset(Dataset):
     def get_transformations(self):
         tfms = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.Resize((64, 64)),
+            transforms.Resize((256, 256)),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor()
         ])

@@ -1,5 +1,5 @@
 from torch import nn
-from .padding_same_conv import Conv2d
+from .conv_block import Conv2D, Conv2D_Transpose
 
 ## deep fakes auto-encoder
 class DeepFakesAutoEncoder(nn.Module):
@@ -12,8 +12,8 @@ class DeepFakesAutoEncoder(nn.Module):
             Conv2D(256, 512),
             Conv2D(512, 1024),
             Flatten(),
-            nn.Linear(1024 * 4 * 4, 1024),
-            nn.Linear(1024, 1024 * 4 * 4),
+            nn.Linear(1024 * 16 * 16, 1024),
+            nn.Linear(1024, 1024 * 16 * 16),
             Reshape(),
             Conv2D_Transpose(1024, 512),
         )
@@ -39,36 +39,8 @@ class DeepFakesAutoEncoder(nn.Module):
         else:
             out = self.encoder(x)
             out = self.decoder_B(out)
-        print(' shape : ', out.shape)
         return out
 
-
-class Conv2D(nn.Module):
-
-    def __init__(self, cin, cout, kernel_size=5, stride=2, padding=2):
-        super().__init__()
-        self.conv_block = nn.Sequential(
-            nn.Conv2d(cin, cout, kernel_size, stride, padding),
-            #nn.BatchNorm2d(cout),
-            nn.LeakyReLU(0.1, inplace=True)
-        )
-
-    def forward(self, x):
-        return self.conv_block(x)
-
-
-class Conv2D_Transpose(nn.Module):
-
-    def __init__(self, cin, cout, kernel_size=5, stride=2, padding=2, output_padding=1):
-        super().__init__()
-        self.conv_block = nn.Sequential(
-            nn.ConvTranspose2d(cin, cout, kernel_size, stride, padding, output_padding),
-            #nn.BatchNorm2d(cout),
-            nn.LeakyReLU(0.1, inplace=True)
-        )
-
-    def forward(self, x):
-        return self.conv_block(x)
 
 class Flatten(nn.Module):
 
@@ -80,34 +52,8 @@ class Flatten(nn.Module):
 class Reshape(nn.Module):
 
     def forward(self, input):
-        output = input.view(-1, 1024, 4, 4)  # channel * 4 * 4
+        output = input.view(-1, 1024, 16, 16)  # channel * 4 * 4
         return output
-
-
-class _ConvLayer(nn.Sequential):
-
-    def __init__(self, input_features, output_features):
-        super(_ConvLayer, self).__init__()
-        self.add_module('conv2', Conv2d(
-            input_features, 
-            output_features,
-            kernel_size=5, 
-            stride=2)
-        )
-        self.add_module('leakyrelu', nn.LeakyReLU(0.1, inplace=True))
-
-
-class _UpScale(nn.Sequential):
-
-    def __init__(self, input_features, output_features):
-        super(_UpScale, self).__init__()
-        self.add_module('conv2_', Conv2d(
-            input_features, 
-            output_features * 4,
-            kernel_size=3)
-        )
-        self.add_module('leakyrelu', nn.LeakyReLU(0.1, inplace=True))
-        self.add_module('pixelshuffler', _PixelShuffler())
 
 
 class _PixelShuffler(nn.Module):
