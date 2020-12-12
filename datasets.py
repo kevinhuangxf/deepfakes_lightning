@@ -40,7 +40,7 @@ class ImagesDataset(Dataset):
     def get_transformations(self):
         tfms = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.Resize((256, 256)),
+            transforms.Resize((128, 128)),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor()
         ])
@@ -49,7 +49,7 @@ class ImagesDataset(Dataset):
 
 class DeepFakesDataModule(pl.LightningDataModule):
 
-    def __init__(self, src_dir, dst_dir, batch_size=1):
+    def __init__(self, src_dir, dst_dir, batch_size, **kwargs):
         super().__init__()
         self.batch_size = batch_size
         self.src_imgs = ImagesDataset(src_dir)

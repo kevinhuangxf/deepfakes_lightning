@@ -1,19 +1,24 @@
+import configs
+from absl import app, flags
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from models import DeepFakesModel
 from datasets import DeepFakesDataModule
 
-def main():
+FLAGS = flags.FLAGS
+
+
+def main(argv=None):
     model = DeepFakesModel()
-    dataset = DeepFakesDataModule('./data/src_aligned', './data/dst_aligned')
+    dataset = DeepFakesDataModule(**FLAGS.flag_values_dict())
     wandb_logger = WandbLogger()
     trainer = pl.Trainer(
         gpus=1,
+        logger=wandb_logger,
         distributed_backend='dp',
-        logger=wandb_logger, 
-        fast_dev_run=False
+        fast_dev_run=False,
     )
     trainer.fit(model, dataset)
 
 if __name__ == '__main__':
-    main()
+    app.run(main)

@@ -28,3 +28,18 @@ class Conv2D_Transpose(nn.Module):
 
     def forward(self, x):
         return self.conv_block(x)
+
+
+class ResidualBlock(nn.Module):
+
+    def __init__(self, ch, kernel_size=5 ):
+        super().__init__()
+        self.conv1 = nn.Conv2d( ch, ch, kernel_size=kernel_size, padding=kernel_size // 2)
+        self.conv2 = nn.Conv2d( ch, ch, kernel_size=kernel_size, padding=kernel_size // 2)
+
+    def forward(self, inp):
+        x = self.conv1(inp)
+        x = nn.LeakyReLU(0.2)(x)
+        x = self.conv2(x)
+        x = nn.LeakyReLU(0.2)(inp + x)
+        return x

@@ -1,1 +1,11 @@
-*.jpg
+#python
+__pycache__/
+
+#vscode
+.vscode
+
+#wandb
+wandb/
+
+#deep fakes lightning
+data/
