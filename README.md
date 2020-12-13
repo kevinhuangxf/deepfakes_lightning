@@ -16,9 +16,9 @@ Pytorch is more and more popular for AI developers, which can help you to build 
 
 ## Model Architecture
 
-### flow chart
+This project follow the deep fakes architecture, uses a shared weight encoder, and train seperated decoder for both src and dst faces. Finally, use the dst face as input to the dst decoder to do the face-swapping.
 
-### hourglass
+![auto-encoder](./images/model.png)
 
 
 ## Training Result
