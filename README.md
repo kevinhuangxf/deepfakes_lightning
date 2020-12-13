@@ -23,8 +23,28 @@ This project follow the deep fakes architecture, uses a shared weight encoder, a
 
 ## Training Result
 
+In each batch is: src/dst face, reconstructed face, swapped face.
+
+![images](./images/faceswap.png)
+
+MSELoss with src/dst faces and reconstructed faces
+
+![loss](./images/loss.png)
+
 ## To Do
+
+### data
 
 1. data preprocessing
 2. face alignment
 3. data augmentation
+
+### model
+
+1. add landmark loss for more accurate expression transformation.
+2. add discriminator 
+
+### production
+
+1. add merging pipeline
+2. add colab notebooks
